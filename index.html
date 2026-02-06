@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday Nancy 💖</title>
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      overflow: hidden;
+    }
+
+    /* CINEMATIC INTRO */
+    .intro {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: radial-gradient(circle at center, #ff4b91, #000);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      color: white;
+      z-index: 10;
+      animation: fadeOut 2s ease 4s forwards;
+    }
+
+    .intro h1 {
+      font-size: 48px;
+      letter-spacing: 3px;
+      animation: zoomIn 2s ease;
+    }
+
+    .intro p {
+      margin-top: 10px;
+      font-size: 18px;
+      opacity: 0.8;
+      animation: fadeIn 3s ease;
+    }
+
+    @keyframes zoomIn {
+      from { transform: scale(0.5); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 0.8; } }
+    @keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
+
+    .card {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(15px);
+      border-radius: 25px;
+      padding: 40px 30px;
+      text-align: center;
+      color: white;
+      width: 360px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.2);
+      animation: float 4s ease-in-out infinite;
+      position: relative;
+      z-index: 2;
+    }
+
+    .photo-wrapper { display: flex; flex-direction: column; align-items: center; margin-bottom: 15px; }
+
+    .photo {
+      width: 180px; height: 180px; border-radius: 50%; object-fit: cover;
+      border: 5px solid white; box-shadow: 0 0 20px rgba(255,255,255,0.7);
+      display: none;
+    }
+
+    .upload-btn {
+      margin-top: 10px; background: white; color: #ff4b91; border: none;
+      padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 14px; font-weight: 600;
+    }
+
+    h1 { font-size: 28px; margin-bottom: 5px; }
+    h2 { font-size: 18px; font-weight: 400; margin-bottom: 15px; }
+
+    .letter {
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 90px;
+      margin-bottom: 20px;
+      border-right: 2px solid white;
+      white-space: pre-line;
+      overflow: hidden;
+    }
+
+    .btn {
+      padding: 12px 25px; border: none; border-radius: 30px;
+      background: #ff4b91; color: white; font-size: 16px; cursor: pointer; transition: 0.3s;
+    }
+
+    .btn:hover { transform: scale(1.1); box-shadow: 0 0 15px #ff4b91; }
+
+    .popup {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 5;
+    }
+
+    .popup-content {
+      background: white; color: #ff4b91; padding: 30px; border-radius: 20px; text-align: center; width: 300px;
+      animation: pop 0.4s ease;
+    }
+
+    .close-btn {
+      margin-top: 15px; padding: 8px 18px; border: none; background: #ff4b91; color: white; border-radius: 20px; cursor: pointer;
+    }
+
+    @keyframes pop { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+    .hearts span {
+      position: absolute; bottom: -20px; font-size: 20px; animation: rise 6s linear infinite; opacity: 0.7; z-index: 1;
+    }
+
+    @keyframes rise { 0% { transform: translateY(0) scale(1); } 100% { transform: translateY(-110vh) scale(1.5); } }
+    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  </style>
+</head>
+
+<body>
+
+  <!-- INTRO SCREEN -->
+  <div class="intro">
+    <h1>For Nancy 💖</h1>
+    <p>A small surprise made with love...</p>
+  </div>
+
+  <div class="card">
+
+    <div class="photo-wrapper">
+      <img id="preview" class="photo" alt="Nancy" />
+      <input type="file" id="upload" accept="image/*" hidden />
+      <button class="upload-btn" onclick="document.getElementById('upload').click()">Choose Nancy Photo</button>
+    </div>
+
+    <h1>Happy Birthday Nancy 💖</h1>
+    <h2>My Beautiful Anime Queen 🌸</h2>
+
+    <div class="letter" id="letter"></div>
+
+    <button class="btn" onclick="showMessage()">Click for Surprise 🎁</button>
+  </div>
+
+  <div class="popup" id="popup">
+    <div class="popup-content">
+      <h2>I Love You Nancy 💖</h2>
+      <p>You are my happiness, my anime princess, and my forever ❤️</p>
+      <button class="close-btn" onclick="closePopup()">Close</button>
+    </div>
+  </div>
+
+  <div class="hearts" id="hearts"></div>
+
+  <script>
+    function showMessage() { document.getElementById('popup').style.display = 'flex'; }
+    function closePopup() { document.getElementById('popup').style.display = 'none'; }
+
+    const uploadInput = document.getElementById('upload');
+    const previewImg = document.getElementById('preview');
+
+    uploadInput.addEventListener('change', function () {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = e => { previewImg.src = e.target.result; previewImg.style.display = 'block'; };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    const text = `Nancy, in this world full of stories,
+You are my favorite chapter ✨
+
+Like an anime hero,
+I promise to protect your smile forever 💫
+
+Happy Birthday, my love ❤️`;
+
+    let i = 0;
+    function typeLetter() {
+      if (i < text.length) {
+        document.getElementById('letter').textContent += text.charAt(i);
+        i++;
+        setTimeout(typeLetter, 40);
+      }
+    }
+
+    setTimeout(typeLetter, 4500);
+
+    const heartsContainer = document.getElementById('hearts');
+    setInterval(() => {
+      const heart = document.createElement('span');
+      heart.innerHTML = '💗';
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDuration = (4 + Math.random() * 3) + 's';
+      heartsContainer.appendChild(heart);
+      setTimeout(() => heart.remove(), 7000);
+    }, 300);
+  </script>
+  <!-- BACKGROUND MUSIC -->
+  <audio id="bgMusic" src="birthday-music.mp3" loop></audio>
+
+  <script>
+    const music = document.getElementById('bgMusic');
+
+    // Play music on first user interaction (mobile safe)
+    document.addEventListener('click', () => {
+      if (music.paused) music.play().catch(() => {});
+    }, { once: true });
+  </script>
+</body>
+</html>
